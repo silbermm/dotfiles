@@ -175,7 +175,7 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
 #		#embers, flat, google, grayscale, greenscreen, harmonic16, isotope, londontube,
 #		#marrakesh, mocha, monokai, ocean, paraiso, pop (dark only), railscasts, shapesifter,
 #		#solarized, summerfruit, tomorrow, twilight
-		  theme="pop"
+		  theme="railscasts"
 #		#Possible variants: dark and light
 		  shade="dark"
 		  BASE16_SHELL="/usr/share/zsh/scripts/base16-shell/base16-$theme.$shade.sh"
