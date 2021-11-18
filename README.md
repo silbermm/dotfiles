@@ -13,7 +13,7 @@
 
 #### Vim
 * install [vim-plug](https://github.com/junegunn/vim-plug)
-* open `vim` and run `:VimInstall`
+* open `vim` and run `:PlugInstall`
 
 ### Adding new files and commiting changes
 
