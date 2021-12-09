@@ -73,6 +73,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-vinegar'
   Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-rhubarb'
 
   " Airline
   Plug 'vim-airline/vim-airline'
@@ -91,6 +93,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/limelight.vim'
   Plug 'junegunn/goyo.vim'
+  Plug 'airblade/vim-gitgutter'
 
   " Notes
   Plug 'xolox/vim-misc'
@@ -229,7 +232,7 @@ colorscheme sonokai
 let g:airline_theme="sonokai"
 let g:airline_powerline_fonts = 1
 set statusline=%#identifier#
-set statusline+=[%t] "tail of the filename
+set statusline+=[%f] "tail of the filename
 set statusline+=%*
 set statusline+=%#warningmsg# "display a warning if fileformat isnt unix
 set statusline+=%{&ff!='unix'?'['.&ff.']':''}
@@ -246,6 +249,7 @@ set statusline+=%#identifier#
 set statusline+=%m
 set statusline+=%*
 set statusline+=%{fugitive#statusline()}
+set statusline+=%{StatuslineGitStatus()}
 set statusline+=%#error#
 set statusline+=%{StatuslineTabWarning()}
 set statusline+=%*
@@ -331,6 +335,11 @@ function! StatuslineLongLineWarning()
     endif
   endif
   return b:statusline_long_line_warning
+endfunction
+
+function! StatuslineGitStatus()
+	let [a,m,r] = GitGutterGetHunkSummary()
+	return printf('+%d ~%d -%d', a, m, r)
 endfunction
 
 "return a list containing the lengths of the long lines in this buffer

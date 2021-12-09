@@ -201,7 +201,7 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 export EDITOR=vim
-export PATH=~/go/bin:~/.local/bin:~/.bin/:$PATH
+export PATH=$PATH:/go/bin:~/.local/bin:~/.bin/
 export GOBIN=$HOME/go/bin
 export GOPATH=$HOME/go
 
