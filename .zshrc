@@ -186,11 +186,11 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
   		ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
     ;;
   *)
-        RPROMPT='$(git_prompt_string)'
+    RPROMPT='$(git_prompt_string)'
 		# Use autosuggestion
 		source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 		ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-  		ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+  	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
     ;;
 esac
 
@@ -224,3 +224,10 @@ export CC=clang
 export CPP="clang -E"
 
 alias dotfiles='/usr/bin/git --git-dir=/home/silbermm/.dotfiles/ --work-tree=/home/silbermm'
+alias zshconfig="vim ~/.zshrc"
+alias tffmt="terraform fmt -recursive -write=true -list=true ."
+alias awswhoami="aws sts get-caller-identity"
+alias awsprofile="grep -Eo 'profile ([A-Za-z0-9\-]*)' ~/.aws/config | sort"
+awsexport() {
+  export $(aws-export-credentials --profile $1 --env)
+}
