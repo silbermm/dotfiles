@@ -223,6 +223,7 @@ let g:sonokai_diagnostic_text_highlight = 1
 let g:sonokai_enable_italic = 0
 let g:sonokai_disable_italic_comment = 1
 let g:sonokai_diagnostic_line_highlight = 1
+set termguicolors
 colorscheme sonokai
 
 
