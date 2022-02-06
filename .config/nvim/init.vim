@@ -87,7 +87,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'sainnhe/sonokai'
   Plug 'junegunn/limelight.vim'
   Plug 'junegunn/goyo.vim'
-  Plug 'airblade/vim-gitgutter'
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
@@ -208,7 +207,7 @@ autocmd FileType rust let b:dispatch = 'cargo build'
 """""""""""""
 nnoremap <leader>. :Telescope find_files<cr>
 nnoremap <leader>b :Telescope buffers<cr>
-nnoremap <leader>f :Telescope lbve_grep<cr>
+nnoremap <leader>f :Telescope live_grep<cr>
 nnoremap <leader>c :Telescope git_commits<cr>
 nnoremap <leader>l :BLines<cr>
 
