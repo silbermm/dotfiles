@@ -29,6 +29,8 @@ window:
     x: 2
     y: 2
 
+  opacity: 0.98
+
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
 
@@ -251,7 +253,6 @@ bell:
   animation: EaseOutExpo
   duration: 0
   color: '0xffffff'
-
 
 # Mouse bindings
 #
