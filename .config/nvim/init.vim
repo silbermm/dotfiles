@@ -93,13 +93,11 @@ call plug#begin('~/.vim/plugged')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-vsnip'
   Plug 'hrsh7th/vim-vsnip'
   Plug 'onsails/lspkind-nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/nvim-compe'
-
 
   " Notes
   Plug 'xolox/vim-misc'
@@ -122,13 +120,8 @@ inoremap jk <ESC>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-"resizing helpers
-nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> _ :exe "resize " . (winheight(0) * 2/3)<CR>
-
-"make <c-l> clear the highlight as well as redraw
-nnoremap <C-L> :nohls<CR><C-L>
-inoremap <C-L> <C-O>:nohls<CR>
+" Clear the highlights
+map <leader>hl :nohls<cr>
 
 " Move visual selection
 vnoremap J :m '>+1<cr>gv=gv
@@ -146,24 +139,8 @@ nmap <silent> <C-k> <C-w>k
 nmap <silent> <C-l> <C-w>l
 
 " Markdown Config
-let g:markdown_fenced_languages = ['elixir', 'go', 'html', 'python', 'bash', 'vim']
 let g:vim_markdown_folding_disabled=1
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-
-"""""""""""""""""
-" ABBREVIATIONS "
-"""""""""""""""""
-iabbrev defm defmodule do
-            \<CR>
-            \ @moduledoc ""
-            \<CR>
-            \<Left><Left>
-            \<CR>
-            \end<Up><Up><Up><Right><Right><Right><Right><Right><Right>
-
-iabbrev def @doc ""<CR>def do<CR><CR>end<Up><Up>
-iabbrev defp defp do<CR><CR>end<Up><Up><Right>
 
 
 """"""""""""""""""
