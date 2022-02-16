@@ -66,7 +66,7 @@ set colorcolumn=+1
 
 syntax enable
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
   " TPOPE Plugins
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-fugitive'
