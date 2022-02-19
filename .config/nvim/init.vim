@@ -159,7 +159,7 @@ autocmd! User GoyoLeave Limelight!
 let g:notes_directories = ['~/Documents/notes']
 let g:notes_suffix = '.md'
 let g:notes_title_sync = 'rename_file'
-let g:notes_shadowdir = "~/.vim/bundle/vim-notes/misc/notes/shadow/"
+let g:notes_shadowdir = "~/.config/nvim/plugged/vim-notes/misc/notes/shadow/"
 let g:notes_unicode_enabled = 0
 
 
