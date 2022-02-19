@@ -80,7 +80,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'vim-airline/vim-airline-themes'
 
   " Languages
-  Plug 'dense-analysis/ale'
+  " Plug 'dense-analysis/ale'
   Plug 'hashivim/vim-terraform'
 
   " Quality of Life
@@ -97,7 +97,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'hrsh7th/vim-vsnip'
   Plug 'onsails/lspkind-nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'hrsh7th/nvim-compe'
+  "Plug 'hrsh7th/nvim-compe'
 
   " Notes
   Plug 'xolox/vim-misc'
@@ -143,6 +143,8 @@ let g:vim_markdown_folding_disabled=1
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 
+autocmd BufNewFile,BufReadPost *.zig set filetype=zig
+
 """"""""""""""""""
 " LIMELIGHT/GOYO "
 """"""""""""""""""
@@ -166,17 +168,13 @@ let g:notes_unicode_enabled = 0
 """""""
 " ALE "
 """""""
-let g:ale_fix_on_save = 1
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'elixir': ['mix_format'],
-\   'go': ['goimports', 'gofmt'],
-\   'rust': ['rustfmt']
-\}
-set completeopt=menu,menuone,preview,noselect,noinsert
-let g:ale_completion_enabled = 0
-nmap <silent> <leader>gd :ALEGoToDefinition<CR>
-
+" let g:ale_fix_on_save = 1
+" let g:ale_fixers = {
+" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \   'elixir': ['mix_format'],
+" \   'go': ['goimports', 'gofmt'],
+" \   'rust': ['rustfmt']
+" \}
 
 """"""""""""
 " Dispatch "
@@ -436,6 +434,7 @@ end
 
 -- Replace the following with the path to your installation
 local path_to_elixirls = vim.fn.expand("~/.cache/nvim/lspconfig/elixirls/elixir-ls/release/language_server.sh")
+local path_to_zigls = vim.fn.expand("~/.cache/nvim/lspconfig/zigls/zls")
 
 lspconfig.elixirls.setup({
   cmd = {path_to_elixirls},
@@ -450,8 +449,30 @@ lspconfig.elixirls.setup({
       -- I also choose to turn off the auto dep fetching feature.
       -- It often get's into a weird state that requires deleting
       -- the .elixir_ls directory and restarting your editor.
-      fetchDeps = false
+      fetchDeps = false,
+      suggestSpecs = true
     }
   }
 })
+
+lspconfig.eslint.setup{}
+lspconfig.jsonls.setup{}
+
+lspconfig.zls.setup({
+  cmd = {path_to_zigls},
+  capabilities = capabilities,
+  on_attach = on_attach
+})
+
+lspconfig.rls.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    rust = {
+      unstable_features = true,
+      build_on_save = false,
+      all_features = true,
+    },
+  }
+}
 EOF
