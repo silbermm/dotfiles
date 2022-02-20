@@ -82,14 +82,16 @@ call plug#begin('~/.config/nvim/plugged')
   " Languages
   " Plug 'dense-analysis/ale'
   Plug 'hashivim/vim-terraform'
+  Plug 'elixir-editors/vim-elixir'
 
   " Quality of Life
   Plug 'sainnhe/sonokai'
   Plug 'junegunn/limelight.vim'
   Plug 'junegunn/goyo.vim'
-  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
@@ -100,6 +102,10 @@ call plug#begin('~/.config/nvim/plugged')
   " Notes
   Plug 'xolox/vim-misc'
   Plug 'xolox/vim-notes'
+
+
+  " Extras
+  Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
 
 """""""""""""""""""
@@ -352,11 +358,12 @@ require'nvim-treesitter.configs'.setup {
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
+  ignore_install = { "elixir" },
 
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
-
+    disable = { "c", "elixir" },
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -366,6 +373,26 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
+lua <<EOF
+require'nvim-web-devicons'.setup {
+ -- your personnal icons can go here (to override)
+ -- you can specify color or cterm_color instead of specifying both of them
+ -- DevIcon will be appended to `name`
+ override = {
+  zsh = {
+    icon = "",
+    color = "#428850",
+    cterm_color = "65",
+    name = "Zsh"
+  }
+ };
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+}
+EOF
+
+" LSP SETUP
 lua <<EOF
 local lspconfig = require("lspconfig")
 
@@ -428,7 +455,7 @@ lspconfig.elixirls.setup({
       -- I choose to disable dialyzer for personal reasons, but
       -- I would suggest you also disable it unless you are well
       -- aquainted with dialzyer and know how to use it.
-      dialyzerEnabled = false,
+      dialyzerEnabled = true,
       -- I also choose to turn off the auto dep fetching feature.
       -- It often get's into a weird state that requires deleting
       -- the .elixir_ls directory and restarting your editor.
@@ -438,8 +465,13 @@ lspconfig.elixirls.setup({
   }
 })
 
-lspconfig.eslint.setup{}
-lspconfig.jsonls.setup{}
+lspconfig.eslint.setup{
+  on_attach = on_attach
+}
+
+lspconfig.jsonls.setup{
+  on_attach = on_attach
+}
 
 lspconfig.zls.setup({
   cmd = {path_to_zigls},
