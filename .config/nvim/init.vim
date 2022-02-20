@@ -93,8 +93,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/cmp-vsnip'
-  Plug 'hrsh7th/vim-vsnip'
   Plug 'onsails/lspkind-nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
   "Plug 'hrsh7th/nvim-compe'
@@ -376,12 +374,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local cmp = require("cmp")
 
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      -- For `vsnip` user.
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
   mapping = {
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -391,8 +383,7 @@ cmp.setup({
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
   },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "vsnip" },
+    { name = "nvim_lsp" }
   },
   formatting = {
     format = require("lspkind").cmp_format({
@@ -418,14 +409,6 @@ local on_attach = function(_, bufnr)
   map("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", map_opts)
   map("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<cr>", map_opts)
 
-  vim.cmd [[imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
-  vim.cmd [[smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
-
-  vim.cmd [[imap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']]
-  vim.cmd [[smap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']]
-  vim.cmd [[imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
-  vim.cmd [[smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
-
   -- tell nvim-cmp about our desired capabilities
   require("cmp_nvim_lsp").update_capabilities(capabilities)
 end
@@ -445,7 +428,7 @@ lspconfig.elixirls.setup({
       -- I choose to disable dialyzer for personal reasons, but
       -- I would suggest you also disable it unless you are well
       -- aquainted with dialzyer and know how to use it.
-      dialyzerEnabled = true,
+      dialyzerEnabled = false,
       -- I also choose to turn off the auto dep fetching feature.
       -- It often get's into a weird state that requires deleting
       -- the .elixir_ls directory and restarting your editor.

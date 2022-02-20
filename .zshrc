@@ -20,7 +20,6 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=1000
 SAVEHIST=500
-export EDITOR=/usr/bin/vim
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
 
@@ -196,14 +195,11 @@ esac
 
 export PATH="$HOME/.cargo/bin:$PATH"
 . $HOME/.asdf/asdf.sh
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
 
-export ERL_AFLAGS="-kernel shell_history enabled"
-export XDG_DATA_HOME="$HOME/.local/share"
-
-export EDITOR=vim
-export PATH=$PATH:/go/bin:~/.local/bin:~/.bin/
-export GOBIN=$HOME/go/bin
-export GOPATH=$HOME/go
 
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*}"'
@@ -211,17 +207,22 @@ fi
 
 
 [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-source /usr/share/nvm/nvm.sh
-source /usr/share/nvm/bash_completion
-source /usr/share/nvm/install-nvm-exec
+source $NVM_DIR/nvm.sh
+source $NVM_DIR/bash_completion
 
+export ERL_AFLAGS="-kernel shell_history enabled"
+export XDG_DATA_HOME="$HOME/.local/share"
+export EDITOR=nvim
+export PATH=$PATH:/go/bin:~/.local/bin:~/.bin/
+export GOBIN=$HOME/go/bin
+export GOPATH=$HOME/go
 export GPG_TTY=$(tty)
-
 export KERL_BUILD_DOCS=yes
 export KERL_INSTALL_MANPAGES=yes
 export EGREP=egrep
-export CC=clang
-export CPP="clang -E"
+#export CC=clang
+#export CPP="clang -E"
+export ELIXIR_EDITOR="vimsh + __LINE__ __FILE__"
 
 alias dotfiles='/usr/bin/git --git-dir=/home/silbermm/.dotfiles/ --work-tree=/home/silbermm'
 alias zshconfig="vim ~/.zshrc"
