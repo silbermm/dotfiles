@@ -68,17 +68,17 @@ scrolling:
 # Font configuration (changes require restart)
 font:
   normal:
-    family: SourceCodePro
+    family: SauceCodePro Nerd Font Mono
     style: Regular
 
   # Bold font face
   bold:
-    family: SourceCodePro
-    style: Bold
+    family: SauceCodePro Nerd Font Mono
+    style: Black
 
   # Italic font face
   italic:
-    family: SourceCodePro
+    family: SauceCodePro Nerd Font Mono
     style: Italic
 
   # Point size

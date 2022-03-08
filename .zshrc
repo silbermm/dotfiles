@@ -232,3 +232,7 @@ alias awsprofile="grep -Eo 'profile ([A-Za-z0-9\-]*)' ~/.aws/config | sort"
 awsexport() {
   export $(aws-export-credentials --profile $1 --env)
 }
+export PATH=$PATH:/home/silbermm/projects/team-tools/bin
+export PATH=$PATH:/home/silbermm/projects/team-tools/bin
+export PATH=$PATH:/home/silbermm/projects/team-tools/bin
+export PATH=$PATH:/home/silbermm/projects/team-tools/bin
