@@ -99,7 +99,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-vsnip'
   Plug 'hrsh7th/vim-vsnip'
-  "Plug 'hrsh7th/nvim-compe'
+  Plug 'hrsh7th/nvim-compe'
 
   " Notes
   Plug 'xolox/vim-misc'
@@ -264,6 +264,7 @@ local lspconfig = require("lspconfig")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local cmp = require("cmp")
 
 cmp.setup({
@@ -272,10 +273,6 @@ cmp.setup({
       -- For `vsnip` user.
       vim.fn["vsnip#anonymous"](args.body)
     end,
-  },
-  window = {
-      -- completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -312,6 +309,20 @@ local on_attach = function(_, bufnr)
   map("n", "gD", "<cmd>lua vim.lsp.buf.implementation()<cr>", map_opts)
   map("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", map_opts)
   map("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<cr>", map_opts)
+
+  vim.cmd [[imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
+  vim.cmd [[smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
+
+  vim.cmd [[imap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']]
+  vim.cmd [[smap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']]
+  vim.cmd [[imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
+  vim.cmd [[smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
+
+  vim.cmd [[inoremap <silent><expr> <C-Space> compe#complete()]]
+  vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
+  vim.cmd [[inoremap <silent><expr> <C-e> compe#close('<C-e>')]]
+  vim.cmd [[inoremap <silent><expr> <C-f> compe#scroll({ 'delta': +4 })]]
+  vim.cmd [[inoremap <silent><expr> <C-d> compe#scroll({ 'delta': -4 })]]
 
   -- tell nvim-cmp about our desired capabilities
   require("cmp_nvim_lsp").update_capabilities(capabilities)
