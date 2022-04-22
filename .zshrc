@@ -206,9 +206,9 @@ if type rg &> /dev/null; then
 fi
 
 
-[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-source $NVM_DIR/nvm.sh
-source $NVM_DIR/bash_completion
+# [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+# source $NVM_DIR/nvm.sh
+# source $NVM_DIR/bash_completion
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 export XDG_DATA_HOME="$HOME/.local/share"

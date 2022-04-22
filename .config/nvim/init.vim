@@ -80,12 +80,12 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'vim-airline/vim-airline-themes'
 
   " Languages
-  " Plug 'dense-analysis/ale'
-  Plug 'hashivim/vim-terraform'
-  Plug 'elixir-editors/vim-elixir'
+  " Plug 'hashivim/vim-terraform'
+  " Plug 'elixir-editors/vim-elixir'
 
   " Quality of Life
   Plug 'sainnhe/sonokai'
+  Plug 'morhetz/gruvbox'
   Plug 'junegunn/limelight.vim'
   Plug 'junegunn/goyo.vim'
   Plug 'nvim-lua/plenary.nvim'
@@ -104,7 +104,6 @@ call plug#begin('~/.config/nvim/plugged')
   " Notes
   Plug 'xolox/vim-misc'
   Plug 'xolox/vim-notes'
-
 
   " Extras
   Plug 'kyazdani42/nvim-web-devicons'
@@ -148,14 +147,14 @@ nmap <silent> <C-l> <C-w>l
 let g:vim_markdown_folding_disabled=1
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-
+" Zig Config
 autocmd BufNewFile,BufReadPost *.zig set filetype=zig
 
 """"""""""""""""""
 " LIMELIGHT/GOYO "
 """"""""""""""""""
-nmap <Leader>l <Plug>(Limelight)
-xmap <Leader>l <Plug>(Limelight)
+"nmap <Leader>l <Plug>(Limelight)
+"xmap <Leader>l <Plug>(Limelight)
 nnoremap <silent> <leader>w :Goyo<CR>
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
@@ -170,17 +169,6 @@ let g:notes_title_sync = 'rename_file'
 let g:notes_shadowdir = "~/.config/nvim/plugged/vim-notes/misc/notes/shadow/"
 let g:notes_unicode_enabled = 0
 
-
-"""""""
-" ALE "
-"""""""
-" let g:ale_fix_on_save = 1
-" let g:ale_fixers = {
-" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-" \   'elixir': ['mix_format'],
-" \   'go': ['goimports', 'gofmt'],
-" \   'rust': ['rustfmt']
-" \}
 
 """"""""""""
 " Dispatch "
@@ -199,173 +187,43 @@ nnoremap <leader>. :Telescope find_files<cr>
 nnoremap <leader>b :Telescope buffers<cr>
 nnoremap <leader>f :Telescope live_grep<cr>
 nnoremap <leader>c :Telescope git_commits<cr>
-nnoremap <leader>l :BLines<cr>
-
-
-
 
 """""""""""""""
 " COLOR THEME "
 """""""""""""""
+let g:gruvbox_italic = 1
 let g:sonokai_style='shusia'
 let g:sonokai_diagnostic_text_highlight = 1
 let g:sonokai_enable_italic = 1
-let g:sonokai_disable_italic_comment = 1
+let g:sonokai_disable_italic_comment = 0
 let g:sonokai_diagnostic_line_highlight = 1
 set termguicolors
-colorscheme sonokai
+" colorscheme sonokai
+colorscheme gruvbox
 
 
 """""""""""
 " AIRLINE "
 """""""""""
-let g:airline_theme="sonokai"
+let g:airline_theme="gruvbox"
 let g:airline_powerline_fonts = 1
-set statusline=%#identifier#
-set statusline+=[%f] "tail of the filename
-set statusline+=%*
-set statusline+=%#warningmsg# "display a warning if fileformat isnt unix
-set statusline+=%{&ff!='unix'?'['.&ff.']':''}
-set statusline+=%*
-set statusline+=%#warningmsg#
-set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
-set statusline+=%*
-set statusline+=%h "help file flag
-set statusline+=%y "filetype
-set statusline+=%#identifier#
-set statusline+=%r
-set statusline+=%*
-set statusline+=%#identifier#
-set statusline+=%m
-set statusline+=%*
-set statusline+=%{fugitive#statusline()}
-set statusline+=%{StatuslineGitStatus()}
-set statusline+=%#error#
-set statusline+=%{StatuslineTabWarning()}
-set statusline+=%*
-set statusline+=%{StatuslineTrailingSpaceWarning()}
-set statusline+=%{StatuslineLongLineWarning()}
-set statusline+=%#warningmsg#
-set statusline+=%*
-set statusline+=%#error#
-set statusline+=%{&paste?'[paste]':''}
-set statusline+=%*
-set statusline+=%= "left/right separator
-set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
-set statusline+=%c, "cursor column
-set statusline+=%l/%L "cursor line/total lines
-set statusline+=\ %P "percent through file
-set laststatus=2
+let g:airline#extensions#whitespace#enabled = 1
+set laststatus=3
 
-autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
-"recalculate the tab warning flag when idle and after writing
-autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
-"recalculate the long line warning when idle and after saving
-autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
-
-function! StatuslineTrailingSpaceWarning()
-  if !exists("b:statusline_trailing_space_warning")
-    if !&modifiable
-      let b:statusline_trailing_space_warning = ''
-      return b:statusline_trailing_space_warning
-    endif
-    if search('\s\+$', 'nw') != 0
-      let b:statusline_trailing_space_warning = '[\s]'
-    else
-      let b:statusline_trailing_space_warning = ''
-    endif
-  endif
-  return b:statusline_trailing_space_warning
-endfunction
-
-function! StatuslineCurrentHighlight()
-  let name= synIDattr(synID(line('.'),col('.'),1),'name')
-  if name == ''
-    return ''
-  else
-    return '['.name.']'
-  endif
-endfunction
-
-function! StatuslineTabWarning()
-  if !exists("bLstatusline_tab_warning")
-    let b:statusline_tab_warning = ''
-
-    if !&modifiable
-      return b:statusline_tab_warning
-    endif
-    let tabs = search('Z^\t', 'nw') != 0
-
-    let spaces = search('!^\{' . &ts . ',}[^\t]', 'nw') != 0
-
-    if tabs && spaces
-      let b:statusline_tab_warning = '[mixed-indenting]'
-    elseif (spaces && !&et) || (tabs && &et)
-      let b:statusline_tab_warning = '[&et]'
-    endif
-    return b:statusline_tab_warning
-endfunction
-
-function! StatuslineLongLineWarning()
-  if !exists("b:statusline_long_line_warning")
-
-    if !&modifiable
-      let b:statusline_long_line_warning = ''
-      return b:statusline_long_line_warning
-    endif
-
-    let long_line_lens = s:LongLines()
-    if len(long_line_lens) > 0
-      let b:statusline_long_line_warning = "[" .
-            \ '#' . len(long_line_lens) . "," .
-            \ 'm' . s:Median(long_line_lens) . "," .
-            \ '$' . max(long_line_lens) . "]"
-    else
-      let b:statusline_long_line_warning = ""
-    endif
-  endif
-  return b:statusline_long_line_warning
-endfunction
-
-function! StatuslineGitStatus()
-	let [a,m,r] = GitGutterGetHunkSummary()
-	return printf('+%d ~%d -%d', a, m, r)
-endfunction
-
-"return a list containing the lengths of the long lines in this buffer
-function! s:LongLines()
-  let threshold = (&tw ? &tw : 80)
-  let spaces = repeat(" ", &ts)
-  let line_lens = map(getline(1,'$'), 'len(substitute(v:val, "\\t", spaces, "g"))')
-  return filter(line_lens, 'v:val > threshold')
-endfunction
-
-"find the median of the given array of numbers
-function! s:Median(nums)
-  let nums = sort(a:nums)
-  let l = len(nums)
-  if l % 2 == 1
-    let i = (l-1) / 2
-    return nums[i]
-  else
-    return (nums[l/2] + nums[(l/2)-1]) / 2
-  endif
-endfunction
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  ensure_installed = "all",
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
-  ignore_install = { "elixir" },
+  --ignore_install = { "elixir" },
 
   highlight = {
-    -- `false` will disable the whole extension
     enable = true,
-    disable = { "c", "elixir" },
+    disable = { "c" },
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -394,6 +252,12 @@ require'nvim-web-devicons'.setup {
 }
 EOF
 
+" Jump forward or backward
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
 " LSP SETUP
 lua <<EOF
 local lspconfig = require("lspconfig")
@@ -409,18 +273,22 @@ cmp.setup({
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
-  mapping = {
+  window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<C-y>"] = cmp.mapping.confirm({ select = true }),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = {
+  }),
+  sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "vsnip" }
-  },
+  }),
   formatting = {
     format = require("lspkind").cmp_format({
       with_text = true,
