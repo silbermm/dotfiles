@@ -199,8 +199,8 @@ let g:sonokai_disable_italic_comment = 0
 let g:sonokai_diagnostic_line_highlight = 1
 set termguicolors
 " colorscheme sonokai
-colorscheme gruvbox
 
+colorscheme gruvbox
 
 """""""""""
 " AIRLINE "
